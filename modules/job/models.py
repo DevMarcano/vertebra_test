@@ -33,8 +33,6 @@ class job(models.Model):
     def Serialize(self):
         return {"id": self.pk,
                 "description": self.description,
-                "image": self.image,
-                "jobStep": self.jobStep,
                 "created_date": self.created_date,
                 "end_date": self.end_date}
 
@@ -42,7 +40,6 @@ class job(models.Model):
 class JobHistory(models.Model):
     job = models.ForeignKey(job, on_delete=models.CASCADE)
     jobStep = models.ForeignKey(JobStep, on_delete=models.CASCADE)
-    description = models.CharField(max_length=250, blank=True, null=True)
     start_Time = models.DateTimeField(auto_now_add=True)
     end_time = models.DateTimeField(db_index=True, null=True)
     actual = models.BooleanField(default=False, null=False)
@@ -65,11 +62,14 @@ class JobHistory(models.Model):
 
         return {"jobStep": self.jobStep.name,
                 "status": status,
+                "actual": self.actual,
                 "start_time": self.start_Time,
                 "end_time": self.end_time}
 
 
 class log(models.Model):
+    # lo coloco aca porque pense que es exagerado
+    # crear todo un modulo solo para 1 modelo y 1 metodo
     process = models.CharField(max_length=250, blank=True, null=True)
     description = models.CharField(max_length=250, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
